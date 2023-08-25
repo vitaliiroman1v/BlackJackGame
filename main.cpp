@@ -1,8 +1,14 @@
-#include <QCoreApplication>
+#include <QApplication>
+
+#include "gui.h"
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication a(argc, argv);
+    QApplication a(argc, argv);
+
+    GUI gui;
+    gui.show();
 
     return a.exec();
 }
+
