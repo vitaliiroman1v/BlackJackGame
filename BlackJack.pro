@@ -11,12 +11,16 @@ CONFIG += c++17
 
 HEADERS += \
     card.h \
-    gui.h
+    deck.h \
+    gui.h \
+    textures.h
 
 SOURCES += \
         card.cpp \
+        deck.cpp \
         gui.cpp \
-        main.cpp
+        main.cpp \
+        textures.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

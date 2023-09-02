@@ -1,42 +1,48 @@
 #include "gui.h"
-
 #include <QVBoxLayout>
-#include "card.h"
+#include <QPushButton>
+#include <QLabel>
+#include "deck.h"
 
-GUI::GUI(QWidget *parent)
-    : QMainWindow{parent}
+GUI::GUI(QWidget *parent) : QMainWindow{parent}
 {
     setFixedSize(1200, 800);
 
-    // Creating cards
-    Card* card1 = new Card;
-    card1->setSuit(Suit::Hearts);
-    card1->setRank(Rank::Ace);
-    card1->setFrontTexture(QPixmap("/home/pypy/Downloads/A-Heart.png"));
-    card1->showFront();
+    // Create a layout for the GUI
+    QVBoxLayout *layout = new QVBoxLayout();
+    deck = new Deck();
+    deck->initialize();
+    deck->shuffle();
 
-    Card* card2 = new Card;
-    card2->setSuit(Suit::Clubs);
-    card2->setRank(Rank::King);
-    card2->setFrontTexture(QPixmap("/home/pypy/Downloads/king_of_clubs.png"));
-    card2->showFront();
+    // Create a label to display the top card
+    topCard = deck->dealCard();
+    topCard->setAlignment(Qt::AlignCenter);
+    topCard->showFront();
+    layout->addWidget(topCard);
 
-    // Creating layouts for each card
-    QVBoxLayout* card1Layout = new QVBoxLayout;
-    card1Layout->addWidget(card1);
+    // Create a "Next" button to change the card
+    QPushButton *nextButton = new QPushButton("Next", this);
+    connect(nextButton, &QPushButton::clicked, this, &GUI::showNextCard);
+    layout->addWidget(nextButton);
 
-    QVBoxLayout* card2Layout = new QVBoxLayout;
-    card2Layout->addWidget(card2);
-
-    // Creating a main layout
-    QHBoxLayout* mainLayout = new QHBoxLayout;
-    mainLayout->addLayout(card1Layout);
-    mainLayout->addLayout(card2Layout);
-
-    // Creating a central widget
-    QWidget* centralWidget = new QWidget(this);
-    centralWidget->setLayout(mainLayout);
-
-    // Set the central widget of the main window
+    // Set the layout for the main window
+    QWidget *centralWidget = new QWidget(this);
+    centralWidget->setLayout(layout);
     setCentralWidget(centralWidget);
+
+    // Initialize the deck and show the top card
+    currentCardIndex = 0;
+    showNextCard();
 }
+
+void GUI::showNextCard()
+{
+    deck->backCard();
+    topCard = deck->dealCard();
+
+    topCard->showFront();
+    // Update the displayed card in the GUI
+    topCard->setAlignment(Qt::AlignCenter);
+    layout()->addWidget(topCard);
+}
+
