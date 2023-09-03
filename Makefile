@@ -3,7 +3,7 @@ CXX = g++
 CXXFLAGS = -std=c++17 -Wall
 
 # List of source files
-SOURCES = main.cpp card.cpp
+SOURCES = main.cpp card.cpp deck.cpp
 
 # Object files
 OBJECTS = $(SOURCES:%.cpp=%.o)
